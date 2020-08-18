@@ -1,0 +1,7 @@
+import keyring
+keyring.set_password('cov_gov','TWITTER_KEY','abc123')
+keyring.set_password('cov_gov','TWITTER_SECRET','abc123')
+
+keyring.set_password('cov_gov','TWITTER_TOKEN','abc123')
+keyring.set_password('cov_gov','TWITTER_TOKEN_SEC','abc123')
+

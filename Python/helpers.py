@@ -100,7 +100,7 @@ def loop_tweets(screen_name, api, db_str = 'postgres://127.0.0.1:5432/tt'):
     # Get the tweets, 199 at a time
     last_id = get_oldest_tweet_id(screen_name= user.screen_name,db_str=db_str)
     for i in range(100):
-        tweets = api.user_timeline(screen_name = user.screen_name, count=199, max_id = last_id, since_id = 1)
+        tweets = api.user_timeline(screen_name = user.screen_name, count=199, max_id = last_id, since_id = 1) #, tweet_mode = 'extended')
         ids = [tweet.id for tweet in tweets]
         if (len(ids)==0):
             #Made it through Everything... or something bombed
