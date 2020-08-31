@@ -41,3 +41,44 @@ df = pd.DataFrame({
 })
 df.head()
 df.shape
+
+
+
+
+
+
+import pandas as pd 
+import numpy as np
+df = pd.DataFrame(
+    data = {
+        'ID' : list(range(1,11)),
+        'GRP': ['A','B'] * 5,
+        'VAL': list(np.random.normal(0, 1, 10))
+    }
+)
+
+
+
+
+def on_status(self, status):
+    if hasattr(status, "retweeted_status"):  # Check if Retweet
+        try:
+            print(status.retweeted_status.extended_tweet["full_text"])
+        except AttributeError:
+            print(status.retweeted_status.text)
+    else:
+        try:
+            print(status.extended_tweet["full_text"])
+        except AttributeError:
+            print(status.text)
+
+def ft_loop_tweets(screen_name, api, db_str = 'postgres://127.0.0.1:5432/tt'):
+    # Target Acquired
+    username = screen_name
+    user = api.get_user(username)
+    # Get the tweets, 199 at a time
+    last_id = get_oldest_tweet_id(screen_name= user.screen_name,db_str=db_str)
+    for i in range(100):
+        tweets = api.user_timeline(screen_name = user.screen_name, count=10, max_id = last_id, since_id = 1, tweet_mode = 'extended')
+        for t in tweets:
+            t.full_text

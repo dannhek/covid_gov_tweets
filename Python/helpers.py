@@ -6,7 +6,12 @@ import string
 import time
 import re
 import urllib.request as urllib2
+import urllib.parse as urlp
 
+
+###############################################################
+#####################  Categorizers  ##########################
+###############################################################
 # Identify if the tweet is about COVID
 def tweet_about_covid(tweet_str):
     ret = False
@@ -27,7 +32,23 @@ def tweet_about_covid(tweet_str):
             break
     return ret
 
+def categorize_url_domain(domain):
+    if domain in ['abc.com','cbs.com','foxnews.com','cnn.com','bbc.com','nytimes.com']:
+        return 'Mainstream News'
+    #
+    elif domain in ['cdc.gov','who.int','nejm.org']:
+        return 'Scientific Source'
+    #
+    elif domain in ['media.twitter.com','twitter.com','amp.twimg.com']:
+        return 'Twitter'
+    #
+    else:
+        return 'Uncategorized'
 
+
+###############################################################
+#####################  URL Handling  ##########################
+###############################################################
 def find_urls(text): 
     ret = []
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -36,17 +57,50 @@ def find_urls(text):
         for url in list(match):
             if url == '':
                 continue
-            response = urllib2.urlopen(url) 
+            try:
+                response = urllib2.urlopen(url) 
+            except:
+                continue
             if response.code == 200:
-                ret.append(response.url)
+                if re.match('^https://twitter.com/i/web/status/',response.url):
+                    #Ignore the link to the status itself
+                    continue
+                else:
+                    ret.append(response.url)
     return ret
 
+
+def extract_domains(urls):
+    ret = []
+    for url in urls:
+        domain = re.sub('^www\.','',urlp.urlparse(url).netloc)
+        ret.append(domain)
+    return ret
+
+
+
+def get_full_tweet_text(status):
+    if hasattr(status, "retweeted_status"):  # Check if Retweet
+        try:
+            return status.retweeted_status.full_text
+        except AttributeError:
+            return status.text
+    else:
+        try:
+            return status.full_text
+        except AttributeError:
+            return status.text
+
+
+###############################################################
+#################  Core Tweet Procesing  ######################
+###############################################################
 # Function to populate data model
 def import_tweets_to_db(tweets, db_str = 'postgres://127.0.0.1:5432/tt'):
     eng = create_engine(db_str)
     df = pd.DataFrame({
         'id'            : [str(tweet.id) for tweet in tweets],
-        'text'          : [tweet.text for tweet in tweets],
+        'text'          : [get_full_tweet_text(tweet) for tweet in tweets],
         'dttm'          : [tweet.created_at for tweet in tweets],
         'isRetweet'     : [tweet.text[0:2] == 'RT' for tweet in tweets],
         'tweeter'       : [tweet.user.screen_name for tweet in tweets],
@@ -77,7 +131,9 @@ def import_tweets_to_db(tweets, db_str = 'postgres://127.0.0.1:5432/tt'):
             u = {
             'tweet_id' : np.repeat(str(tweet.id),len(urlrefs)),
             'line'     : list(range(max(len(urlrefs),0))),
-            'urls'    : urlrefs
+            'url'      : urlrefs,
+            'domain'   : extract_domains(urlrefs),
+            'category' : (categorize_url_domain(extract_domains(url)) for url in urlrefs)
             }
             pd.DataFrame(u).to_sql('urlrefs',con = eng,if_exists='append',index=False)
 
