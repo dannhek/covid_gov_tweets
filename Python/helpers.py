@@ -32,18 +32,24 @@ def tweet_about_covid(tweet_str):
             break
     return ret
 
-def categorize_url_domain(domain):
-    if domain in ['abc.com','cbs.com','foxnews.com','cnn.com','bbc.com','nytimes.com']:
-        return 'Mainstream News'
-    #
-    elif domain in ['cdc.gov','who.int','nejm.org']:
-        return 'Scientific Source'
-    #
-    elif domain in ['media.twitter.com','twitter.com','amp.twimg.com']:
-        return 'Twitter'
-    #
-    else:
-        return 'Uncategorized'
+def categorize_url_domain(domains):
+    ret = []
+    for domain in domains:
+        if domain in ['abc.com','cbs.com','foxnews.com','cnn.com','bbc.com','nytimes.com','bloomberg.com']:
+            ret.append('Mainstream News')
+        #
+        elif domain in ['cdc.gov','who.int','nejm.org']:
+            ret.append('Scientific Source')
+        #
+        elif re.match('.+\.gov.*',domain):
+            ret.append('Government')
+        #
+        elif domain in ['media.twitter.com','twitter.com','amp.twimg.com']:
+            ret.append('Twitter')
+        #
+        else:
+            ret.append('Uncategorized')
+    return ret
 
 
 ###############################################################
@@ -96,7 +102,7 @@ def get_full_tweet_text(status):
 #################  Core Tweet Procesing  ######################
 ###############################################################
 # Function to populate data model
-def import_tweets_to_db(tweets, db_str = 'postgres://127.0.0.1:5432/tt'):
+def import_tweets_to_db(tweets, db_str):
     eng = create_engine(db_str)
     df = pd.DataFrame({
         'id'            : [str(tweet.id) for tweet in tweets],
@@ -139,7 +145,7 @@ def import_tweets_to_db(tweets, db_str = 'postgres://127.0.0.1:5432/tt'):
 
 
 # Get the last tweet ID for this user from the database. 
-def get_oldest_tweet_id(screen_name, db_str = 'postgres://127.0.0.1:5432/tt'):
+def get_oldest_tweet_id(screen_name, db_str):
     eng = create_engine(db_str)
     try: 
         tweet_id = pd.read_sql(sql="select id from tweets where tweeter = '{}' order by dttm limit 1".format(screen_name), con=eng)
@@ -149,7 +155,7 @@ def get_oldest_tweet_id(screen_name, db_str = 'postgres://127.0.0.1:5432/tt'):
     return ret
 
 
-def loop_tweets(screen_name, api, db_str = 'postgres://127.0.0.1:5432/tt'):
+def loop_tweets(screen_name, api, db_str):
     # Target Acquired
     username = screen_name
     user = api.get_user(username)
@@ -168,5 +174,5 @@ def loop_tweets(screen_name, api, db_str = 'postgres://127.0.0.1:5432/tt'):
             break
         last_id = min(ids)-1
         print('{}: {}'.format(i,last_id))
-        import_tweets_to_db(tweets=tweets)
+        import_tweets_to_db(tweets = tweets, db_str = db_str)
 

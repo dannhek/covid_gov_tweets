@@ -1,77 +1,51 @@
-﻿State,Governor,Party,twitter_handle,personal_twitter,,
-Alabama,Kay Ivey,Republican,,,,
-Alaska,Mike Dunleavy,Republican,,,,
-Arizona,Doug Ducey,Republican,,,,
-Arkansas,Asa Hutchinson,Republican,,,,
-California,Gavin Newsom,Democratic,,,,
-Colorado,Jared Polis,Democratic,,,,
-Connecticut,Ned Lamont,Democratic,,,,
-Delaware,John Carney,Democratic,,,,
-Florida,Ron DeSantis,Republican,,,,
-Georgia,Brian Kemp,Republican,,,,
-Hawaii,David Ige,Democratic,,,,
-Idaho,Brad Little,Republican,,,,
-Illinois,J. B. Pritzker,Democratic,,,,
-Indiana,Eric Holcomb,Republican,,,,
-Iowa,Kim Reynolds,Republican,,,,
-Kansas,Laura Kelly,Democratic,,,,
-Kentucky,Andy Beshear,Democratic,,,,
-Louisiana,John Bel Edwards,Democratic,,,,
-Maine,Janet Mills,Democratic,,,,
-Maryland,Larry Hogan,Republican,,,,
-Massachusetts,Charlie Baker,Republican,,,,
-Michigan,Gretchen Whitmer,Democratic,,,,
-Minnesota,Tim Walz,Democratic,,,,
-Mississippi,Tate Reeves,Republican,,,,
-Missouri,Mike Parson,Republican,,,,
-Montana,Steve Bullock,Democratic,,,,
-Nebraska,Pete Ricketts,Republican,,,,
-Nevada,Steve Sisolak,Democratic,,,,
-New Hampshire,Chris Sununu,Republican,,,,
-New Jersey,Phil Murphy,Democratic,,,,
-New Mexico,Michelle Lujan Grisham,Democratic,,,,
-New York,Andrew Cuomo,Democratic,,,,
-North Carolina,Roy Cooper,Democratic,,,,
-North Dakota,Doug Burgum,Republican,,,,
-Ohio,Mike DeWine,Republican,,,,
-Oklahoma,Kevin Stitt,Republican,,,,
-Oregon,Kate Brown,Democratic,,,,
-Pennsylvania,Tom Wolf,Democratic,,,,
-Rhode Island,Gina Raimondo,Democratic,,,,
-South Carolina,Henry McMaster,Republican,,,,
-South Dakota,Kristi Noem,Republican,,,,
-Tennessee,Bill Lee,Republican,,,,
-Texas,Greg Abbott,Republican,,,,
-Utah,Gary Herbert,Republican,,,,
-Vermont,Phil Scott,Republican,,,,
-Virginia,Ralph Northam,Democratic,,,,
-Washington,Jay Inslee,Democratic,,,,
-West Virginia,Jim Justice,Republican,,,,
-Wisconsin,Tony Evers,Democratic,GovEvers,,,
-Wyoming,Mark Gordon,Republican,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
+State,Governor,Party,twitter_handle,personal_twitter
+Alabama,Kay Ivey,Republican,GovernorKayIvey,
+Alaska,Mike Dunleavy,Republican,GovDunleavy,
+Arizona,Doug Ducey,Republican,dougducey,
+Arkansas,Asa Hutchinson,Republican,AsaHutchinson,
+California,Gavin Newsom,Democratic,GavinNewsom,
+Colorado,Jared Polis,Democratic,GovofCO,jaredpolis
+Connecticut,Ned Lamont,Democratic,GovNedLamont,
+Delaware,John Carney,Democratic,JohnCarneyDE,
+Florida,Ron DeSantis,Republican,GovRonDeSantis,
+Georgia,Brian Kemp,Republican,GovKemp,
+Hawaii,David Ige,Democratic,GovHawaii,
+Idaho,Brad Little,Republican,GovernorLittle,
+Illinois,J. B. Pritzker,Democratic,GovPritzker,
+Indiana,Eric Holcomb,Republican,GovHolcomb,HolcombForIN
+Iowa,Kim Reynolds,Republican,IAGovernor,
+Kansas,Laura Kelly,Democratic,GovLauraKelly,
+Kentucky,Andy Beshear,Democratic,GovAndyBeshear,
+Louisiana,John Bel Edwards,Democratic,LouisianaGov,
+Maine,Janet Mills,Democratic,GovJanetMills,
+Maryland,Larry Hogan,Republican,GovLarryHogan,
+Massachusetts,Charlie Baker,Republican,MassGovernor,CharlieBakerMA
+Michigan,Gretchen Whitmer,Democratic,GovWhitmer,
+Minnesota,Tim Walz,Democratic,GovTimWalz,
+Mississippi,Tate Reeves,Republican,tatereeves,
+Missouri,Mike Parson,Republican,GovParsonMO,mikeparson
+Montana,Steve Bullock,Democratic,GovernorBullock,
+Nebraska,Pete Ricketts,Republican,GovRicketts,
+Nevada,Steve Sisolak,Democratic,GovSisolak,SteveSisolak
+New Hampshire,Chris Sununu,Republican,GovChrisSununu,ChrisSununu
+New Jersey,Phil Murphy,Democratic,GovMurphy,
+New Mexico,Michelle Lujan Grisham,Democratic,GovMLG,Michelle4NM
+New York,Andrew Cuomo,Democratic,NYGovCuomo,andrewcuomo
+North Carolina,Roy Cooper,Democratic,NC_Governor,RoyCooperNC
+North Dakota,Doug Burgum,Republican,DougBurgum,DougForDakota
+Ohio,Mike DeWine,Republican,GovMikeDeWine,MikeDeWine
+Oklahoma,Kevin Stitt,Republican,GovStitt,
+Oregon,Kate Brown,Democratic,OregonGovBrown,KateBrownForOR
+Pennsylvania,Tom Wolf,Democratic,GovernorTomWolf,TomWolfPA
+Rhode Island,Gina Raimondo,Democratic,GovRaimondo,GinaRaimondo
+South Carolina,Henry McMaster,Republican,scgovernorpress,henrymcmaster
+South Dakota,Kristi Noem,Republican,govkristinoem,KristiNoem
+Tennessee,Bill Lee,Republican,GovBillLee,BillLeeTN
+Texas,Greg Abbott,Republican,GovAbbott,GregAbbott_TX
+Utah,Gary Herbert,Republican,GovHerbert,HerbertForUtah
+Vermont,Phil Scott,Republican,GovPhilScott,PhilScott4VT
+Virginia,Ralph Northam,Democratic,GovernorVA,RalphNortham
+Washington,Jay Inslee,Democratic,GovInslee,JayInslee
+West Virginia,Jim Justice,Republican,WVGovernor,JimJusticeWV
+Wisconsin,Tony Evers,Democratic,GovEvers,Tony4WI
+Wyoming,Mark Gordon,Republican,GovernorGordon,Mark_Gordon_WY
