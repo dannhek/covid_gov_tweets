@@ -5,6 +5,7 @@ import numpy as np
 import string 
 import time
 import re
+import os
 import urllib.request as urllib2
 import urllib.parse as urlp
 
@@ -102,8 +103,13 @@ def get_full_tweet_text(status):
 #################  Core Tweet Procesing  ######################
 ###############################################################
 # Function to populate data model
-def import_tweets_to_db(tweets, db_str):
-    eng = create_engine(db_str)
+def import_tweets_to_db(tweets, db_str = None, csv_dir = None):
+    if db_str is not None:
+        eng = create_engine(db_str)
+    #
+    else:
+        eng = None
+    #
     df = pd.DataFrame({
         'id'            : [str(tweet.id) for tweet in tweets],
         'text'          : [get_full_tweet_text(tweet) for tweet in tweets],
@@ -112,7 +118,12 @@ def import_tweets_to_db(tweets, db_str):
         'tweeter'       : [tweet.user.screen_name for tweet in tweets],
         'covid_related' : [tweet_about_covid(tweet.text) for tweet in tweets],
     })
-    df.to_sql('tweets', con = eng, if_exists='append', index=False)
+    if eng is not None:
+        df.to_sql('tweets', con = eng, if_exists='append', index=False)
+    #
+    if csv_dir is not None:
+        df.to_csv(path_or_buf=os.path.join(csv_dir,'tweets.csv'), mode='a', index=False)
+    #
     print(df.shape)
     for tweet in tweets:
         tokens = [s.rstrip(string.punctuation) for s in tweet.text.replace('\n',' ').split(' ')]
@@ -125,14 +136,24 @@ def import_tweets_to_db(tweets, db_str):
             'line'     : list(range(max(len(hashtags),0))),
             'hashtag'  : hashtags
             }
-            pd.DataFrame(h).to_sql('hashtags',con = eng,if_exists='append',index=False)
+            if eng is not None:
+                pd.DataFrame(h).to_sql('hashtags',con = eng,if_exists='append',index=False)
+            #
+            if csv_dir is not None:
+                pd.DataFrame(h).to_csv(path_or_buf=os.path.join(csv_dir,'hashtags.csv'), mode='a', index=False)
+            #
         if (len(userrefs) > 0) :
             u = {
             'tweet_id' : np.repeat(str(tweet.id),len(userrefs)),
             'line'     : list(range(max(len(userrefs),0))),
             'users'    : userrefs
             }
-            pd.DataFrame(u).to_sql('atusers',con = eng,if_exists='append',index=False)
+            if eng is not None:
+                pd.DataFrame(u).to_sql('atusers',con = eng,if_exists='append',index=False)
+            #
+            if csv_dir is not None:
+                pd.DataFrame(u).to_csv(path_or_buf=os.path.join(csv_dir,'atusers.csv'), mode='a', index=False)
+            #            
         if (len(urlrefs) > 0) :
             u = {
             'tweet_id' : np.repeat(str(tweet.id),len(urlrefs)),
@@ -141,26 +162,41 @@ def import_tweets_to_db(tweets, db_str):
             'domain'   : extract_domains(urlrefs),
             'category' : (categorize_url_domain(extract_domains(url)) for url in urlrefs)
             }
-            pd.DataFrame(u).to_sql('urlrefs',con = eng,if_exists='append',index=False)
+            if eng is not None:
+                pd.DataFrame(u).to_sql('urlrefs',con = eng,if_exists='append',index=False)
+            #
+            if csv_dir is not None:
+                pd.DataFrame(u).to_csv(path_or_buf=os.path.join(csv_dir,'urlrefs.csv'), mode='a', index=False)
+            #               
 
 
 # Get the last tweet ID for this user from the database. 
-def get_oldest_tweet_id(screen_name, db_str):
-    eng = create_engine(db_str)
-    try: 
-        tweet_id = pd.read_sql(sql="select id from tweets where tweeter = '{}' order by dttm limit 1".format(screen_name), con=eng)
-        ret = int(tweet_id.iloc[0]['id']) - 1 
-    except:
+def get_oldest_tweet_id(screen_name, db_str = None, csv_dir = None):
+    if db_str is not None:
+        eng = create_engine(db_str)
+        try: 
+            tweet_id = pd.read_sql(sql="select id from tweets where tweeter = '{}' order by dttm limit 1".format(screen_name), con=eng)
+            ret = int(tweet_id.iloc[0]['id']) - 1 
+        except:
+            ret = None
+    elif csv_dir is not None:
+        try:
+            t = pd.read_csv(os.path.join(csv_dir,'tweets.csv'))
+            tweet_id = t[t.tweeter == screen_name].sort_values('dttm')
+            ret = int(tweet_id.iloc[0]['id']) - 1 
+        except:
+            ret = None
+    else:
         ret = None
     return ret
 
 
-def loop_tweets(screen_name, api, db_str):
+def loop_tweets(screen_name, api, db_str = None, csv_dir = None):
     # Target Acquired
     username = screen_name
     user = api.get_user(username)
     # Get the tweets, 199 at a time
-    last_id = get_oldest_tweet_id(screen_name= user.screen_name,db_str=db_str)
+    last_id = get_oldest_tweet_id(screen_name= user.screen_name,db_str=db_str, csv_dir=csv_dir)
     for i in range(100):
         tweets = api.user_timeline(screen_name = user.screen_name, count=199, max_id = last_id, since_id = 1) #, tweet_mode = 'extended')
         ids = [tweet.id for tweet in tweets]
@@ -174,5 +210,5 @@ def loop_tweets(screen_name, api, db_str):
             break
         last_id = min(ids)-1
         print('{}: {}'.format(i,last_id))
-        import_tweets_to_db(tweets = tweets, db_str = db_str)
+        import_tweets_to_db(tweets = tweets, db_str = db_str, csv_dir=csv_dir)
 
