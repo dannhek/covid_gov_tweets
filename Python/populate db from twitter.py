@@ -7,7 +7,6 @@ import string
 import time
 from sqlalchemy import create_engine
 import psycopg2
-import math
 
 # import helpers as pj
 
@@ -15,7 +14,7 @@ import math
 # from helpers import import_tweets_to_db
 # from helpers import get_last_tweet_id
 # from helpers import loop_tweets
-exec(open(os.path.join('.','Python','helpers.py')).read())
+exec(open(os.path.join('.','Python','helpers.py'), encoding="utf8").read())
 
 
 # Pull in Passwords
