@@ -15,11 +15,11 @@ import math
 # from helpers import import_tweets_to_db
 # from helpers import get_last_tweet_id
 # from helpers import loop_tweets
-exec(open('./Python/helpers.py').read())
+exec(open(os.path.join('.','Python','helpers.py')).read())
 
 
 # Pull in Passwords
-exec(open('./consumerpy').read())
+exec(open(os.path.join('.','consumerpy')).read())
 
 # Open the Connection to Twitter
 auth = tweepy.OAuthHandler(keyring.get_password('cov_gov','TWITTER_KEY'),keyring.get_password('cov_gov','TWITTER_SECRET'))
@@ -37,6 +37,6 @@ for us in gov_list:
 for user in ['GOPconvention']:
     # get_oldest_tweet_id(screen_name= screen_name,db_str='postgres://127.0.0.1:5432/tt')
     # loop_tweets(screen_name=user, api= api, db_str = os.environ['DATABASE_URL'])
-    loop_tweets(screen_name=user, api= api, csv_dir = '/Users/dhek/Desktop/covid_gov_tweets/db')
+    loop_tweets(screen_name=user, api= api, csv_dir = 'db')
     # loop_tweets(screen_name=user, api= api, db_str = 'postgres://127.0.0.1:5432/tt')
 
